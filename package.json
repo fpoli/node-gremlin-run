@@ -1,0 +1,15 @@
+{
+  "name": "gremlin-run",
+  "version": "0.1.0",
+  "description": "Command line interface to execute a single gremlin query",
+  "main": "index.js",
+  "author": "Federico Poli <federpoli@gmail.com>",
+  "license": "ISC",
+  "bin": {
+    "gremlin-run": "./run.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "gremlin": "^2.3.2"
+  }
+}
