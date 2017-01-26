@@ -2,24 +2,44 @@
 var program = require('commander')
 var gremlin = require('gremlin')
 
+var query = ""
+
 program
-    .version('0.1.0')
-    .arguments('<query>')
-    .option('-h, --host <host>', 'The gremlin server host')
-    .option('-p, --port <port>', 'The gremlin server port')
+    .option('-h, --host <host>', 'The gremlin server host', process.env.gremlin_server || 'localhost')
+    .option('-p, --port <port>', 'The gremlin server port', process.env.gremlin_port || 8182)
+    .option('-o, --output <output>', 'Use "raw", "toString" or "json"', "toString")
+    .option('-v, --verbose', 'Verbose')
+    .arguments('<query>').action(function(q) {
+        query = q
+    })
     .parse(process.argv);
 
-const client = gremlin(
-    program.port || process.env.gremlin_port || 8182,
-    program.host || process.env.gremlin_server || 'localhost',
-    options={ path: '/gremlin' }
-)
+if (program.verbose) {
+    console.log("Connecting to gremlin server " + program.host + ":" + program.port + "...")
+}
+const client = gremlin.createClient(program.port, program.host, options={ path: '/gremlin' })
 
-client.execute('program.query', function(err, result) {
+if (program.output === "toString") {
+    query += ".map{it.get().toString()}"
+}
+
+if (program.verbose) {
+    console.log("Running query \"" + query + "\"...")
+}
+client.execute(query, function(err, result) {
     if (err) {
-        console.err(err)
+        if (program.verbose) {
+            console.error(err)
+        }
         process.exit(1)
     } else {
-        result.forEach(console.log)
+        result.forEach(function(line){
+            if (program.output === "json") {
+                process.stdout.write(JSON.stringify(line) + "\n")
+            } else {
+                process.stdout.write(line + "\n")
+            }
+        })
+        process.exit(0)
     }
 })

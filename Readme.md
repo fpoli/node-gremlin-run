@@ -13,15 +13,17 @@ Install
 Examples
 --------
 
-Using default options
+Basic usage
 
 	gremlin-run "g.V().label().dedup()"
+	gremlin-run "g.V().label().dedup()" --output json
+	gremlin-run "g.V().label().dedup()" --output raw --verbose
 
-Using options
+Specify gremlin server using command line arguments
 
 	gremlin-run --port 8182 --host 127.0.0.1 "g.V().label().dedup()"
 
-Using environment variables
+Specify gremlin server using environment variables
 
 	export gremlin_port=8182
 	export gremlin_host=127.0.0.1
