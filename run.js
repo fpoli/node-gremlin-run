@@ -14,6 +14,10 @@ program
     })
     .parse(process.argv);
 
+if (query === "") {
+    program.help()
+}
+
 if (program.verbose) {
     console.log("Connecting to gremlin server " + program.host + ":" + program.port + "...")
 }
@@ -28,9 +32,7 @@ if (program.verbose) {
 }
 client.execute(query, function(err, result) {
     if (err) {
-        if (program.verbose) {
-            console.error(err)
-        }
+        console.error(err)
         process.exit(1)
     } else {
         result.forEach(function(line){
