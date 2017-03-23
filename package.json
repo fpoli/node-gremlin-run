@@ -1,10 +1,10 @@
 {
   "name": "gremlin-run",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Command line interface to execute a single gremlin query",
-  "main": "index.js",
+  "license": "MIT",
+  "repository": "fpoli/node-gremlin-run",
   "author": "Federico Poli <federpoli@gmail.com>",
-  "license": "ISC",
   "bin": {
     "gremlin-run": "./run.js"
   },
